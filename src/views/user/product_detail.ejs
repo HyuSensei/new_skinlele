@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkinLeLe-Detail</title>
+    <%- include('./block/style.ejs') %>
+</head>
+
+<body>
+    <%- include('./block/header.ejs') %>
+        <div class="breadcrumb-option">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb__links">
+                            <a href="/"><i class="fa fa-home"></i> Trang Chủ</a>
+                            <a href="">Chi Tiết Sản Phẩm </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Breadcrumb End -->
+
+        <!-- Product Details Section Begin -->
+        <section class="product-details spad">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="product__details__pic">
+                            <div class="product__details__slider__content">
+                                <div class="product__details__pic__slider owl-carousel">
+                                    <a class="pt active" href="">
+                                        <img data-hash="product-1" class="product__big__img" src="<%= product.image %>"
+                                            alt="">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="product__details__text">
+                            <h5>
+                                <%= product.name %>
+                            </h5>
+                            <% if(product.sale>0) {
+                                price_detail = (100-product.sale)*product.price /100
+                                } else
+                                {
+                                price_detail = product.price %>
+                                <% } %>
+
+                                    <div class="product__details__price">
+                                        <% price_detail=price_detail.toLocaleString('vi-VN') %>
+                                            <%= price_detail %> đ
+                                    </div>
+                                    <p>
+                                        <%= product.description %>
+                                    </p>
+                                    <div class="product__details__button">
+                                        <a href="/addCart/<%= product.id %>" class="cart-btn"> Thêm
+                                            giỏ
+                                            hàng</a>
+                                    </div>
+                                    <div style="margin-left: 10px;" class="row">
+                                        <div class=".col-md-4">
+                                            <p style="font-size: 18px;">(
+                                                <%= countRate %> đánh giá)
+                                            </p>
+                                        </div>
+                                        <div style="margin-left: 50px;" class=".col-md-8">
+                                            <div class="rating">
+                                                <i style="margin: 5px;font-size: 20px" class="fa fa-star"></i>
+                                                <i style="margin: 5px;font-size: 20px" class="fa fa-star"></i>
+                                                <i style="margin: 5px;font-size: 20px" class="fa fa-star"></i>
+                                                <i style="margin: 5px;font-size: 20px" class="fa fa-star"></i>
+                                                <i style="margin: 5px;font-size: 20px" class="fa fa-star"></i>
+                                                <%= countStar.fine %>
+                                            </div>
+                                            <div class="rating">
+                                                <i style="margin: 5px;font-size: 20px" class="fa fa-star"></i>
+                                                <i style="margin: 5px;font-size: 20px" class="fa fa-star"></i>
+                                                <i style="margin: 5px;font-size: 20px" class="fa fa-star"></i>
+                                                <i style="margin: 5px;font-size: 20px" class="fa fa-star"></i>
+                                                <%= countStar.four %>
+                                            </div>
+                                            <div class="rating">
+                                                <i style="margin: 5px;font-size: 20px" class="fa fa-star"></i>
+                                                <i style="margin: 5px;font-size: 20px" class="fa fa-star"></i>
+                                                <i style="margin: 5px;font-size: 20px" class="fa fa-star"></i>
+                                                <%= countStar.three %>
+                                            </div>
+                                            <div class="rating">
+                                                <i style="margin: 5px;font-size: 20px" class="fa fa-star"></i>
+                                                <i style="margin: 5px;font-size: 20px" class="fa fa-star"></i>
+                                                <%= countStar.two %>
+                                            </div>
+                                            <div class="rating">
+                                                <i style="margin: 5px;font-size: 20px" class="fa fa-star"></i>
+                                                <%= countStar.one %>
+                                            </div>
+                                        </div>
+                                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 100px;border-radius: 20px;" class="container">
+                <div style="font-size: 18px;padding-top: 20px;" class="container">ĐÁNH GIÁ SẢN PHẨM</div>
+                <% if(rate.length>0) { %>
+                    <% rate.forEach(function(item){ %>
+                        <div style="margin-top: 20px;">
+                            <div class="row">
+                                <div style="margin-left: 15px;" class=".col-md-2">
+                                    <i style="font-size: 30px;padding-left: 25px;padding-top: 10px;"
+                                        class="fa-solid fa-user"></i>
+                                </div>
+                                <div class=".col-md-10">
+                                    <p style="padding-top: 10px;margin-left: 10px;">
+                                        <%= item.user_name %>
+                                    </p>
+                                </div>
+                            </div>
+                            <div style="margin-left: 25px;">
+                                <% const apiDateString="2023-09-24T14:59:44.000Z" ; %>
+
+                                    <% const apiDate=new Date(item.createdAt); %>
+                                        <% const day=apiDate.getDate(); %>
+                                            <% const month=apiDate.getMonth() + 1; %>
+                                                <% const year=apiDate.getFullYear(); %>
+
+                                                    <% const formattedDateString=`${day}-${month < 10 ? "0" : ""
+                                                        }${month}-${year}`; %>
+
+                                                        <p>
+                                                            <%= formattedDateString %>
+                                                        </p>
+                                                        <% if (item.star===1) { %>
+                                                            <div class="rating">
+                                                                <i style="margin: 5px;font-size: 20px;color: #e3c01c;"
+                                                                    class="fa fa-star"></i>
+                                                            </div>
+                                                            <% } else if (item.star===2) { %>
+                                                                <div class="rating">
+                                                                    <i style="margin: 5px;font-size: 20px;color: #e3c01c;"
+                                                                        class="fa fa-star"></i>
+                                                                    <i style="margin: 5px;font-size: 20px;color: #e3c01c;"
+                                                                        class="fa fa-star"></i>
+                                                                </div>
+                                                                <% } else if (item.star===3) { %>
+                                                                    <div class="rating">
+                                                                        <i style="margin: 5px;font-size: 20px;color: #e3c01c;"
+                                                                            class="fa fa-star"></i>
+                                                                        <i style="margin: 5px;font-size: 20px;color: #e3c01c;"
+                                                                            class="fa fa-star"></i>
+                                                                        <i style="margin: 5px;font-size: 20px;color: #e3c01c;"
+                                                                            class="fa fa-star"></i>
+                                                                    </div>
+                                                                    <% } else if (item.star===4) { %>
+                                                                        <div class="rating">
+                                                                            <i style="margin: 5px;font-size: 20px;color: #e3c01c;"
+                                                                                class="fa fa-star"></i>
+                                                                            <i style="margin: 5px;font-size: 20px;color: #e3c01c;"
+                                                                                class="fa fa-star"></i>
+                                                                            <i style="margin: 5px;font-size: 20px;color: #e3c01c;"
+                                                                                class="fa fa-star"></i>
+                                                                            <i style="margin: 5px;font-size: 20px;color: #e3c01c;"
+                                                                                class="fa fa-star"></i>
+                                                                        </div>
+                                                                        <% } else { %>
+                                                                            <div class="rating">
+                                                                                <i style="margin: 5px;font-size: 20px;color: #e3c01c;"
+                                                                                    class="fa fa-star"></i>
+                                                                                <i style="margin: 5px;font-size: 20px;color: #e3c01c;"
+                                                                                    class="fa fa-star"></i>
+                                                                                <i style="margin: 5px;font-size: 20px;color: #e3c01c;"
+                                                                                    class="fa fa-star"></i>
+                                                                                <i style="margin: 5px;font-size: 20px;color: #e3c01c;"
+                                                                                    class="fa fa-star"></i>
+                                                                                <i style="margin: 5px;font-size: 20px;color: #e3c01c;"
+                                                                                    class="fa fa-star"></i>
+                                                                            </div>
+                                                                            <% } %>
+
+                                                                                <p>
+                                                                                    <%= item.comment %>
+                                                                                </p>
+                            </div>
+                            <hr>
+                            <% }); %>
+                                <% } else { %>
+                                    <p style="padding-left:30px">Chưa có đánh giá nào !</p>
+                                    <% } %>
+
+                        </div>
+            </div>
+        </section>
+        <%- include('./block/footer.ejs') %>
+</body>
+<%- include('./block/script.ejs') %>
+
+</html>

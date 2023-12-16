@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./block/header.ejs') %>
+
+    <body id="page-top">
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <!-- Sidebar -->
+            <%- include('./block/nav.ejs') %>
+                <!-- End of Sidebar -->
+
+                <!-- Content Wrapper -->
+                <div id="content-wrapper" class="d-flex flex-column">
+
+                    <!-- Main Content -->
+                    <div id="content">
+
+                        <!-- Topbar -->
+                        <%- include('./block/topnav.ejs') %>
+                        <!-- End of Topbar -->
+
+                        <!-- Begin Page Content -->
+                        <div class="container-fluid">
+
+                            <!-- Page Heading -->
+                            <h1 class="h3 mb-2 text-gray-800">Danh sách sản phẩm</h1>
+
+                            <!-- DataTales Example -->
+                            <div class="card shadow mb-4">
+                                
+                                <div class="card-header py-3" style="text-align: center; display: flex; align-items: center;" >
+                                    <div style="width: 50%;"><a href="/admin/product/create" style="text-decoration: none;"><i class="fa-solid fa-plus"></i> Thêm sản phẩm mới</a></div>
+                                    <form action="/admin/product" method="post"
+                                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                                        <div class="input-group" style="border: 1px solid black; border-radius: 6px ;">
+                                            <input type="text" class="form-control bg-light border-0 small"
+                                                placeholder="nhập tên sản phẩm" aria-label="Search"
+                                                aria-describedby="basic-addon2" name="name" <% if(typeof nameSearch
+                                                !=='undefined' ){ %>
+                                            value="<%=nameSearch%>"
+                                                <%}%>
+
+                                                    >
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-primary" type="submit">
+                                                            <i class="fas fa-search fa-sm"></i>
+                                                        </button>
+                                                    </div>
+                                        </div>
+                                    </form>
+                                    
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 50%;">Tên sản phẩm</th>
+                                                    <th style="text-align: center;">Giá(VNĐ)</th>
+                                                    <th style="text-align: center;">Số lượng</th>
+                                                    <th style="text-align: center; width: 10%;">Chỉnh sửa</th>
+                                                    <th style="text-align: center; width: 10%;">Xóa sản phẩm</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody id="contentTable">
+                                            </tbody>
+
+                                        </table>
+                                        <div id="pagination" style="display: flex; justify-content: center; width: 100%;"></div>
+                                        <% if(typeof message !=='undefined' ){ %>
+                                            <p style="width: 100%; text-align: center;">
+                                                <%=message%>
+                                            </p>
+                                            <% } %>
+                                    </div>
+                                </div>
+                                
+
+                            </div>
+
+                        </div>
+                        <!-- /.container-fluid -->
+
+                    </div>
+                    <!-- End of Main Content -->
+
+                    <!-- Footer -->
+                    <footer class="sticky-footer bg-white">
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span>Copyright &copy; Your Website 2020</span>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- End of Footer -->
+
+                </div>
+                <!-- End of Content Wrapper -->
+
+        </div>
+        <!-- End of Page Wrapper -->
+
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="login.html">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal delete product -->
+        <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="deletemodalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deletemodalLabel">Thông báo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Bạn có chắc chắn muốn xóa sản phẩm này không
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-danger" onclick="deleteprd()">Xóa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include('./block/footer.ejs') %>
+    </body>
+    <script>
+            const pageSize = 6;
+            const totalItems = <%= countProducts %>;
+            let currentPage = 1;
+            // Tạo nút phân trang
+            function createPaginationButtons() {
+                const totalPages = Math.ceil(totalItems / pageSize);
+                const paginationDiv = document.getElementById("pagination");
+
+                for (let i = 1; i <= totalPages; i++) {
+                    const button = document.createElement("button");
+                    button.textContent = i;
+                    button.className = "page-link";
+                    button.addEventListener("click", function () {
+                        currentPage = i;
+                        updateContent();
+                    });
+                    paginationDiv.appendChild(button);
+                }
+            }
+
+            // Cập nhật nội dung theo trang hiện tại
+            
+            
+            function updateContent() {
+                
+                const contentDiv = document.getElementById("contentTable");
+                contentDiv.innerHTML = ""; 
+                const apiUrl = "<%= process.env.BASE_URL %>"+`prodouct/limit/${currentPage}`;
+                //contentDiv.innerHTML = `Đang hiển thị trang ${currentPage}`;
+                fetch(apiUrl)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        //console.log(data.product);
+                        for(i=0; i< data.product.length-1; i++){
+                            //console.log(data.product[i]);
+                            
+                            const tr = document.createElement("tr");
+                            const productItem = document.createElement("td");
+                            const price = document.createElement("td");
+                            const quantity = document.createElement("td");
+                            const setting = document.createElement("td");
+                            const updateURL = document.createElement("a");
+                            const upicon = document.createElement("i");
+                            upicon.className= "fas fa-pen";
+                            upicon.style.color = "#858796";
+                            setting.style.textAlign = "center"
+                            updateURL.appendChild(upicon);
+                            updateURL.href = `/admin/product/edit/${data.product[i].id}`;
+                            setting.appendChild(updateURL)
+
+                            const deleteItem = document.createElement("td");
+                            const deleteURL = document.createElement("a");
+                            const deleteicon = document.createElement("i");
+                            deleteicon.className = "fas fa-trash";
+                            deleteicon.style.color = "#858796";
+                            deleteicon.addEventListener("click", function (e) {
+                                const confirmation = confirm('Bạn có muốn xóa sản phẩm này không');
+                                if (!confirmation) {
+                                    e.preventDefault();
+                                }
+                            });
+                            deleteItem.style.textAlign = "center"
+                            deleteURL.appendChild(deleteicon);
+                            deleteURL.href = `/admin/product/delete/${data.product[i].id}`;
+                            deleteItem.appendChild(deleteURL)
+
+                            productItem.textContent = `${data.product[i].name}`;
+                            price.textContent = `${data.product[i].price}`;
+                            price.style.textAlign = "center"
+                            quantity.textContent = `${data.product[i].quantity}`;
+                            quantity.style.textAlign = "center"
+
+                            tr.appendChild(productItem);
+                            tr.appendChild(price);
+                            tr.appendChild(quantity);
+                            tr.appendChild(setting);
+                             tr.appendChild(deleteItem);
+                            contentDiv.appendChild(tr)
+                                                   
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Lỗi khi gọi API: " + error);
+                });
+                
+            }
+
+            createPaginationButtons();
+            updateContent();
+    </script>
+
+</html>

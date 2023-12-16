@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./block/header.ejs') %>
+
+    <body id="page-top">
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <!-- Sidebar -->
+            <%- include('./block/nav.ejs') %>
+                <!-- End of Sidebar -->
+
+                <!-- Content Wrapper -->
+                <div id="content-wrapper" class="d-flex flex-column">
+
+                    <!-- Main Content -->
+                    <div id="content">
+
+                        <!-- Topbar -->
+                        <%- include('./block/topnav.ejs') %>
+                        <!-- End of Topbar -->
+
+                        <!-- Begin Page Content -->
+                        <div class="container-fluid">
+
+                            <!-- Page Heading -->
+                            <h1 class="h3 mb-2 text-gray-800">Nhập thông tin sản phẩm</h1>
+
+                            <!-- DataTales Example -->
+                            
+
+                                <% if (success !='' ) { %>
+                                    <div class="alert alert-success">
+                                        <%= success %>
+                                    </div>
+                                    <% } %>
+                                <% if (err !='' ) { %>
+                                    <div class="alert alert-danger">
+                                        <%= err %>
+                                    </div>
+                                    <% } %>
+                                <div class="card shadow mb-4"
+                                    style="display: flex; height: 30rem;">
+                                    <form action="/admin/product/create" method="post" style="display: flex;" enctype="multipart/form-data">
+                                        <div class="card" style="width: 30rem;">
+                                            
+                                            <div
+                                                style="text-align: center;width: 100%; height: 100%; margin-top:1rem ; text-align: center;">
+                                                <img class="card-img-top" src="/images/products/new-product.png"
+                                                    alt="Card image cap" id="selectedImage"
+                                                    style="width: 75%; height: 75%;">
+                                                <p class="card-text" style="text-align: center;">
+                                                    Hình ảnh sản phẩm
+                                                </p>
+                                                <label for="image">Chọn tệp hình ảnh:</label>
+                                                <input type="file" id="image" style="margin-left: 10px;" name="image">
+                                            </div>
+
+                                        </div>
+                                        
+                                        <div class="card" style="width: 50rem;">
+                                            
+                                            <div class="form-floating mb-3" style="margin: 20px;">
+                                                <label for="productname">Tên sản phẩm</label>
+                                                <input type="text" id="productname" class="form-control"
+                                                    placeholder="Nhập tên sản phẩm" value=""
+                                                    name="name">
+                                                <label for="price">Giá sản phẩm</label>
+                                                <input type="text" id="price" class="form-control"
+                                                    placeholder="Nhập giá sản phẩm" value=""
+                                                    name="price">
+                                                <label for="price">Mô tả sản phẩm</label>
+                                                <textarea type="text" id="description" class="form-control"
+                                                    placeholder="Nhập mô tả sản phẩm"
+                                                    name="description"></textarea>
+                                                <label for="quantity">Số lượng sản phẩm</label>
+                                                <input type="text" id="quantity" class="form-control"
+                                                    placeholder="Nhập số lượng sản phẩm" value=""
+                                                    name="quantity">
+                                                <label for="Category">Danh mục sản phẩm</label>
+                                                <select class="form-control" id="category" name="CategoryId">
+                                                    <% if(typeof categories != 'undefined'){ %>
+                                                        <option>
+                                                            chọn danh mục sản phẩm
+                                                        </option>
+                                                        <% categories.forEach(function(item, index, array) { %>
+                                                            <option value="<%= item.id %>">
+                                                                <%= item.name %>
+                                                            </option>
+                                                        <% }) %>
+                                                    <% } %>
+                                                </select>
+                                                
+                                                <div
+                                                    style="margin-top: 2rem; text-align: center; display: flex; justify-content: space-around;">
+                                                    <a href="/admin/product" class="btn btn-danger">Trở lại</a>
+                                                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+
+
+                                    </form>
+                                </div>
+
+                               
+                        </div>
+                        <!-- /.container-fluid -->
+
+                    </div>
+                    <!-- End of Main Content -->
+
+                    <!-- Footer -->
+                    <footer class="sticky-footer bg-white">
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span>Copyright &copy; Your Website 2020</span>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- End of Footer -->
+
+                </div>
+                <!-- End of Content Wrapper -->
+
+        </div>
+        <!-- End of Page Wrapper -->
+
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="login.html">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <%- include('./block/footer.ejs') %>
+            <script>
+                const image = document.getElementById('image');
+                const selectedImage = document.getElementById('selectedImage');
+                image.addEventListener('change', function () {
+                    const file = this.files[0];
+
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            selectedImage.src = e.target.result;
+                        };
+
+                        reader.readAsDataURL(file);
+                        const input2 = document.getElementById('image2');
+
+                    } else {
+                        selectedImage.style.display = 'none';
+                    }
+                });
+            </script>
+    </body>
+
+</html>

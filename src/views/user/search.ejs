@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SkinLeLe</title>
+    <%- include('./block/style.ejs') %>
+</head>
+
+<body>
+    <%- include('./block/header.ejs') %>
+        <!-- Breadcrumb Begin -->
+        <div class="breadcrumb-option">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb__links">
+                            <a href="/"><i class="fa fa-home"></i> Trang Chủ</a>
+                            <a href="">Tìm Kiếm </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="product-details spad">
+            <div class="container" style="font-size: 25px;margin-bottom: 40px;">SẢN PHẨM CẦN TÌM</div>
+            <div class="container">
+                <div class="row" id="show_product">
+                    <% if(products.length>0){ %>
+                        <% products.forEach(function(product){ %>
+                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                <div class="product__item">
+                                    <div class="product__item__pic" style="height: 275px;">
+                                        <img src="<%= product.image %>" height=275px alt="" />
+                                        <div class="label new">Top</div>
+                                        <ul class="product__hover">
+                                            <li><a href="" class="image-popup"><span class="arrow_expand"></span></a>
+                                            </li>
+                                            <li><a href=""><span class="icon_heart_alt"></span></a></li>
+                                            <li><a href="/addCart/<%= product.id %>"><button class="add_to_cart"><span
+                                                            class="icon_bag_alt"></span></button></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6><a style="display: -webkit-box;
+                                max-height: 3.2rem;
+                               -webkit-box-orient: vertical;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                white-space: normal;
+                                -webkit-line-clamp: 2;
+                                line-height: 1.6rem;
+                                margin-top: 10px;" href="/detail/<%= product.id %>">
+                                                <%= product.name %>
+                                            </a>
+                                        </h6>
+                                        <% if(product.sale>0) {
+                                            price = (100-product.sale)*product.price /100
+                                            } else
+                                            {
+                                            price = product.price %>
+                                            <% } %>
+                                                <div class="product__price">
+                                                    <% price=price.toLocaleString('vi-VN') %>
+                                                        <%= price %> đ
+                                                </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <% }); %>
+                                <div class="container">
+                                    <ul class="pagination pagination-lg">
+                                        <% for (let i=1; i <=total_page; i++) { %>
+                                            <% if (i===current_page) { %>
+                                                <li class="page-item active"><a class="page-link"
+                                                        href="/search?product_name=<%= product_name %>&page=<%= i %>">
+                                                        <%= i %>
+                                                    </a></li>
+                                                <% } else { %>
+                                                    <li class="page-item"><a class="page-link"
+                                                            href="/search?product_name=<%= product_name %>&page=<%= i %>">
+                                                            <%= i %>
+                                                        </a></li>
+                                                    <% } %>
+                                                        <% } %>
+                                    </ul>
+                                </div>
+                                <% } else { %>
+                                    <div class="container">
+                                        <p style="font-size: 20px;font-weight: bold;text-align: center;">Không tìm thấy
+                                            sản phẩm</p>
+                                        <% } %>
+                                    </div>
+                </div>
+            </div>
+        </section>
+        <%- include('./block/footer.ejs') %>
+
+            <%- include('./block/script.ejs') %>
+</body>
+
+</html>

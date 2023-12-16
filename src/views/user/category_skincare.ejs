@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        SkinLeLe
+    </title>
+    <%- include('./block/style.ejs') %>
+</head>
+
+<body id="top">
+    <%- include('./block/header.ejs') %>
+        <main>
+            <article>
+                <div class="breadcrumb-option">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="breadcrumb__links">
+                                    <a href="/"><i class="fa fa-home"></i> Trang Chủ</a>
+                                    <span>Danh Mục Sản Phẩm</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 100px;margin-top: 40px;" class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <!-- Sidebar danh mục sản phẩm -->
+                            <div class="sidebar">
+                                <h5>Danh mục</h5>
+                                <h4 style="font-weight: bold;margin-top: 10px;margin-bottom: 20px;">Chăm Sóc Da</h4>
+                                <% category_skincare.forEach(function(item){ %>
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><a href="/categories/skincare/<%= item.id %>">
+                                                <%= item.name %>
+                                            </a></li>
+                                    </ul>
+                                    <% }); %>
+                            </div>
+                            <div class="sidebar">
+                                <h4 style="font-weight: bold;margin-top: 10px;margin-bottom: 20px;">Trang Điểm</h4>
+                                <% category_makeup.forEach(function(item){ %>
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><a href="/categories/makeup/<%= item.id %>">
+                                                <%= item.name %>
+                                            </a></li>
+                                    </ul>
+                                    <% }); %>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="container">
+                                <div>
+                                    <img src="https://file.hstatic.net/1000006063/collection/skincare_cba3c3279fa8406a99b0c6d4ef65b2b8.png"
+                                        style="width: 100%;" alt="">
+                                </div>
+                                <div style="margin-top: 50px;" class="row" id="show_product">
+                                    <% products.forEach(function(product){ %>
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                            <div class="product__item">
+                                                <div class="product__item__pic" style="height:200px">
+                                                    <img src="<%= product.image %>" alt="" />
+                                                    <ul class="product__hover">
+                                                        <li><a href="" class="image-popup"><span
+                                                                    class="arrow_expand"></span></a>
+                                                        </li>
+                                                        <li><a href=""><span class="icon_heart_alt"></span></a></li>
+                                                        <li><a href="/addCart/<%= product.id %>"><button
+                                                                    class="add_to_cart"><span
+                                                                        class="icon_bag_alt"></span></button></a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="product__item__text">
+                                                    <h6><a href="/detail/<%= product.id %>" style="display: -webkit-box;
+                                                max-height: 3.2rem;
+                                               -webkit-box-orient: vertical;
+                                                overflow: hidden;
+                                                text-overflow: ellipsis;
+                                                white-space: normal;
+                                                -webkit-line-clamp: 2;
+                                                line-height: 1.6rem;
+                                                margin-top: 10px;" href="">
+                                                            <%= product.name %>
+                                                        </a></h6>
+                                                    <% if(product.sale>0) {
+                                                        price = (100-product.sale)*product.price /100
+                                                        } else
+                                                        {
+                                                        price = product.price %>
+                                                        <% } %>
+                                                            <div class="product__price">
+                                                                <% price=price.toLocaleString('vi-VN') %>
+                                                                    <%= price %> đ
+                                                            </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% }); %>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <ul class="pagination pagination-lg">
+                                    <% for (let i=1; i <=total_page; i++) { %>
+                                        <% if (i===current_page) { %>
+                                            <li class="page-item active"><a class="page-link"
+                                                    href="/categories/skincare/<%= category_id %>?page=<%= i %>">
+                                                    <%= i %>
+                                                </a></li>
+                                            <% } else { %>
+                                                <li class="page-item"><a class="page-link"
+                                                        href="/categories/skincare/<%= category_id %>?page=<%= i %>">
+                                                        <%= i %>
+                                                    </a></li>
+                                                <% } %>
+                                                    <% } %>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                </div>
+            </article>
+        </main>
+        <%- include('./block/footer.ejs') %>
+</body>
+<%- include('./block/script.ejs') %>
+
+</html>

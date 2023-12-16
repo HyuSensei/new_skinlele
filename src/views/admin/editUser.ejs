@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./block/header.ejs') %>
+
+    <body id="page-top">
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <!-- Sidebar -->
+            <%- include('./block/nav.ejs') %>
+                <!-- End of Sidebar -->
+
+                <!-- Content Wrapper -->
+                <div id="content-wrapper" class="d-flex flex-column">
+
+                    <!-- Main Content -->
+                    <div id="content">
+
+                        <!-- Topbar -->
+                        <%- include('./block/topnav.ejs') %>
+                        <!-- End of Topbar -->
+
+                        <!-- Begin Page Content -->
+                        <div class="container-fluid">
+
+                            <!-- Page Heading -->
+                            <h1 class="h3 mb-2 text-gray-800">Thông tin người dùng</h1>
+
+                            <!-- DataTales Example -->
+                            
+
+
+                                <div class="card shadow mb-4"
+                                    style="display: flex; flex-direction: row; height: 35rem; justify-content: center;">
+                                    <form action="/admin/user/update" method="post" style="display: flex;">
+                                        
+                                        
+                                        <div class="card" style="width: 50rem; border: none; margin-top: 1rem;">
+                                            <% if(typeof dataUser !='undefined' ){ %>
+                                            <div class="form-floating mb-3" style="margin: 20px;">
+                                                <input type="hidden" name="id" value="<%= dataUser.id %>">
+                                                <label for="name">Họ và tên</label>
+                                                <input type="text" id="name" class="form-control"
+                                                    placeholder="Nhập họ và tên" value="<%= dataUser.name %>"
+                                                    name="name" required>
+                                                <label for="email">Email</label>
+                                                <input type="email" id="email" class="form-control"
+                                                    placeholder="Nhập Email" value="<%= dataUser.email %>"
+                                                    name="email" required readonly>
+                                                <label for="username">Username</label>
+                                                <input type="text" id="username" class="form-control"
+                                                    placeholder="Nhập username"
+                                                    name="username" value="<%= dataUser.username %>" required readonly>
+                                                <label for="password">Password</label>
+                                                <input type="password" id="password" class="form-control"
+                                                    placeholder="Nhập password" value="<%= dataUser.password %>"
+                                                    name="password" required readonly>
+                                                <label for="phone">SĐT</label>
+                                                <input type="text" id="phone" class="form-control" placeholder="Nhập số điện thoại" value="<%= dataUser.phone %>" name="phone" required>
+                                                <label for="role">Vai trò</label>
+                                                <select class="form-control" id="role" name="RoleId">
+                                                    <% if(typeof Role != "undefined"){ 
+                                                        Role.forEach(role=>{
+                                                            if(role.id == dataUser.RoleId){ %>
+                                                                <option value="<%= role.id %>" selected>
+                                                                    <%= role.name %>
+                                                                </option>
+                                                    <% } else { %>
+                                                        <option value="<%= role.id %>"><%= role.name %></option>
+                                                    <% } })} %>
+                                                </select>
+                                            <% } %>
+                                                <div
+                                                    style="margin-top: 2rem; text-align: center; display: flex; justify-content: space-around;">
+                                                    <a href="/admin/user" class="btn btn-danger">Trở lại</a>
+                                                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+
+
+                                    </form>
+                                </div>
+
+                                
+
+                        </div>
+                        <!-- /.container-fluid -->
+
+                    </div>
+                    <!-- End of Main Content -->
+
+                    <!-- Footer -->
+                    <footer class="sticky-footer bg-white">
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span>Copyright &copy; Your Website 2020</span>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- End of Footer -->
+
+                </div>
+                <!-- End of Content Wrapper -->
+
+        </div>
+        <!-- End of Page Wrapper -->
+
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="login.html">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <%- include('./block/footer.ejs') %>
+    </body>
+
+</html>
