@@ -24,6 +24,12 @@ const handleLogin = async (req, res) => {
     if (data.data.success == true) {
       console.log(data.data);
       req.flash("success", `${data.data.message}`);
+      res.cookie("name", data.data.user.name, {
+        maxAge: 24 * 60 * 60 * 1000,
+      });
+      res.cookie("email", data.data.user.email, {
+        maxAge: 24 * 60 * 60 * 1000,
+      });
       res.cookie("UserId", data.data.user.id, {
         maxAge: 24 * 60 * 60 * 1000,
       });

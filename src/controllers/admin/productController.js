@@ -1,5 +1,5 @@
 const db = require("../../models/index");
-
+const { Sequelize, DataTypes, Op } = require('sequelize');
 const storeProduct = async (req, res) => {
   try {
     const dataStore = req.body
@@ -63,8 +63,8 @@ const updateProduct = async (req, res) => {
   // console.log("kkk",req.params)
   // let data = await productService.updateNewProduct(req.body);
   try {
-    const dataProduct = req.body
-    console.log("ass", dataProduct);
+    const dataProduct = req.body.body
+    //console.log("ass", dataProduct.body);
     await db.Product.update(
       {
         name: dataProduct.name,
@@ -104,16 +104,18 @@ const destroyProduct = async (req, res) => {
     let order_product = await db.Order_Product.findAll({
       where: { ProductId: dataProduct },
     });
-    await db.Order.destroy(
-      {
-        where: { id: order_product[0].OrderId }
-      }
-    )
-    await db.Order_Product.destroy(
-      {
-        where: { OrderId: order_product[0].OrderId }
-      }
-    )
+    if (order_product.length>0){
+      await db.Order.destroy(
+        {
+          where: { id: order_product[0].OrderId }
+        }
+      )
+      await db.Order_Product.destroy(
+        {
+          where: { OrderId: order_product[0].OrderId }
+        }
+      )
+    }
 
     return res.json({
       success: true,
@@ -134,7 +136,7 @@ const showProduct = async (req, res) => {
     let data = await db.Product.findOne({
       where: { id: dataProduct },
     });
-    //console.log('s',data)
+    console.log('s',data)
     return res.json(data);
   } catch (error) {
     console.log(error);

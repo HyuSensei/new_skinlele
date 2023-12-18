@@ -1,16 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const apiProduct = require("../../api/user/apiProduct");
-const userController = require("../../controllers/admin/userController");
 const apiUser = require("../../api/admin/apiUser");
 const apiOrderManagement = require("../../api/admin/apiOrderManagement");
 const apiProductAdmin = require("../../api/admin/apiProduct");
-
-const middleware = require("../../middleware/JWTAction");
 const upload = require("../../middleware/UploadImg");
 const JWTAction = require("../../middleware/JWTAction");
 const apiAdmin = require("../../api/admin/apiAdmin");
 const apiAuthAdmin = require("../../api/admin/apiAuthAdmin");
+
 // admin
 router.get("/loginAdmin", apiAuthAdmin.loginAdmin);
 router.post("/loginAdmin", apiAuthAdmin.handleLoginAdmin);
@@ -29,7 +26,7 @@ router.get("/admin", JWTAction.checkPremission, apiAdmin.getHome);
 router.get(
   "/admin/product",
   JWTAction.checkPremission,
-  apiProduct.getProductHome2
+  apiProductAdmin.getProductHome2
 );
 router.get(
   "/admin/product/page/:currentPage",
@@ -40,37 +37,37 @@ router.get(
 router.get(
   "/admin/product/delete/:id",
   JWTAction.checkPremission,
-  apiProduct.deleteProduct
+  apiProductAdmin.deleteProduct
 );
 //get product by name
 router.post(
   "/admin/product",
   JWTAction.checkPremission,
-  apiProduct.getProductByName
+  apiProductAdmin.getProductByName
 );
 //edit product
 router.get(
   "/admin/product/edit/:id",
   JWTAction.checkPremission,
-  apiProduct.getProductDetail2
+  apiProductAdmin.getProductDetail2
 );
 router.post(
   "/admin/product/edit",
   JWTAction.checkPremission,
   upload.single("image"),
-  apiProduct.updateProduct
+  apiProductAdmin.updateProduct
 );
 //create product
 router.get(
   "/admin/product/create",
   JWTAction.checkPremission,
-  apiProduct.getCreateProduct
+  apiProductAdmin.getCreateProduct
 );
 router.post(
   "/admin/product/create",
   JWTAction.checkPremission,
   upload.single("image"),
-  apiProduct.createProduct
+  apiProductAdmin.createProduct
 );
 
 //crud user
@@ -121,7 +118,5 @@ router.get(
   JWTAction.checkPremission,
   apiOrderManagement.deleteOrder
 );
-
-router.get("/user", middleware.requireLogin, userController.showUser);
 
 module.exports = router;

@@ -1,6 +1,5 @@
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
-const userService = require("../../services/userService");
 
 require("dotenv").config();
 function formatVND(amount) {
@@ -22,7 +21,7 @@ const getHome = async (req, res) => {
       process.env.BASE_URL + `order_product/desc`
     );
     let categoriesSale = await axios.get(
-      process.env.BASE_URL + `categories/sale`
+      process.env.BASE_URL + `category/sale`
     );
     let countAllRate = await axios.get(process.env.BASE_URL + `allCountRate`);
     let productAllRate = await axios.get(

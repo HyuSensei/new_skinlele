@@ -108,7 +108,8 @@
                                     <div class="col-xl-3 col-md-6 mb-4">
                                         <div class="card border-left-warning shadow h-100 py-2">
                                             <div class="card-body">
-                                                <div class="row no-gutters align-items-center">
+                                                <div class="row no-gutters align-items-center" data-toggle="modal"
+                                                    data-target="#exampleModal">
                                                     <div class="col mr-2">
                                                         <div
                                                             class="text-xs font-weight-bold text-warning text-uppercase mb-1">
@@ -124,8 +125,69 @@
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
 
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Danh sách đánh giá</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <% if(typeof productAllRate !=="undefined" ){ %>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Hình ảnh</th>
+                                                                <th scope="col">Tên sản phẩm</th>
+                                                                <th scope="col">Số sao</th>
+                                                                <th scope="col">Đánh giá</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <% productAllRate.forEach(product=> {
+                                                                if(product.Rates.length >0 ){
+                                                                %>
+                                                                <tr>
+                                                                    <th scope="row">
+                                                                        <a href="/detail/<%= product.id %>"><img
+                                                                                src="<%= product.image %>" alt=""
+                                                                                style="width: 5rem;"></a>
+                                                                    </th>
+                                                                    <td>
+                                                                        <%= product.name %>
+                                                                    </td>
+                                                                    <% product.Rates.forEach(rate=> { %>
+                                                                        <td>
+                                                                            <%= rate.star %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= rate.comment %>
+                                                                        </td>
+                                                                        <% }) %>
+                                                                </tr>
+
+                                                                <% } } ) %>
+                                                        </tbody>
+                                                    </table>
+                                                    <% }else{ %>
+                                                        <p>Không có đánh giá nào</p>
+                                                        <% } %>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- Content Row -->
 
                                 <div class="row">
@@ -280,8 +342,10 @@
             <script>
                 //doanh thu
                 var tongThuNhap = []
+
                     <% Statistics.forEach(function (item) { %>
                         tongThuNhap.push(<%= item.tong_thu_nhap %>);
+            
         <% }); %>
         //console.log(tongThuNhap)
         var ctx = document.getElementById("myAreaChart");
@@ -380,11 +444,17 @@
                 <% order_productDesc.forEach(function (product) { %>
                     data.push({
                         sold_quantity: <%= product.sold_quantity %>,
-                        name: "<%= product.Product.name %>"
+                        <% if (product.Product !== null) { %>
+                        name: "<%= product.Product.name %>",
+                        <% } else { %>
+                        name: "sản phẩm a",
+                        <% } %>
+                        
                     });
                 <% }); %>
         <% } else { %>
         <% } %>
+        
         
 
         const itemsPerPage = 4; // Số lượng sản phẩm trên mỗi trang

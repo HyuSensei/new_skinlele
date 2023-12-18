@@ -56,8 +56,20 @@ app.use((req, res, next) => {
   next();
 });
 app.use((req, res, next) => {
-  if (!req.cookies.UserId) {
+  if (
+    !req.cookies.UserId ||
+    !req.cookies.name ||
+    !req.cookies.username ||
+    !req.cookies.email ||
+    !req.cookies.phone ||
+    !req.cookies.address
+  ) {
     res.locals.UserId = "";
+    res.locals.name = "";
+    res.locals.username = "";
+    res.locals.email = "";
+    res.locals.phone = "";
+    res.locals.address = "";
   }
   if (
     !req.cookies.adminUserId ||
@@ -75,6 +87,11 @@ app.use((req, res, next) => {
     res.locals.adminaddress = "";
   }
   res.locals.UserId = req.cookies.UserId;
+  res.locals.name = req.cookies.name;
+  res.locals.username = req.cookies.username;
+  res.locals.email = req.cookies.email;
+  res.locals.phone = req.cookies.phone;
+  res.locals.address = req.cookies.address;
 
   //admin
   res.locals.adminUserId = req.cookies.adminUserId;

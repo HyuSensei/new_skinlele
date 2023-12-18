@@ -100,7 +100,7 @@ const countStarprd = async (dataRate) => {
       four: four_star,
       fine: fine_star,
     };
-    console.log("Data count star:", countStar);
+    console.log("Data count star 2:", countStar);
     return countStar;
   } catch (error) {
     console.log(error);

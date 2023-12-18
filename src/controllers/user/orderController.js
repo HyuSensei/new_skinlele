@@ -27,6 +27,14 @@ const addOrder = async (req, res) => {
             message: "Đặt hàng thành công !",
           });
         }
+        if (req.body.user.method == "onl") {
+          await orderOnl(cart, userOrder);
+          return res.status(200).json({
+            success: true,
+            method: "Thanh toán paypal",
+            message: "Đặt hàng thành công !",
+          });
+        }
       }
     }
   } catch (error) {
@@ -42,6 +50,33 @@ const orderOff = async (cart, userOrder) => {
     }
     let orderInsert = await db.Order.create({
       payment: "Thanh toán khi nhận hàng",
+      status: 0,
+      name: userOrder.name,
+      address: userOrder.address,
+      phone: userOrder.phone,
+      total: total,
+      UserId: userOrder.user_id,
+    });
+    for (let i = 0; i < cart.length; i++) {
+      await db.Order_Product.create({
+        ProductId: cart[i].id,
+        OrderId: orderInsert.id,
+        quantity: cart[i].quantity,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const orderOnl = async (cart, userOrder) => {
+  try {
+    let total = 0;
+    for (let i = 0; i < cart.length; i++) {
+      total = cart[i].price * cart[i].quantity;
+    }
+    let orderInsert = await db.Order.create({
+      payment: "Thanh toán PayPal",
       status: 0,
       name: userOrder.name,
       address: userOrder.address,

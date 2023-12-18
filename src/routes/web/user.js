@@ -19,6 +19,8 @@ router.get("/register", middleware.getAllCategory, (req, res) => {
 router.post("/login", apiAuth.handleLogin);
 router.post("/register", apiAuth.handleRegister);
 router.get("/logout", (req, res) => {
+  res.cookie("name", "", { maxAge: 0 });
+  res.cookie("email", "", { maxAge: 0 });
   res.cookie("token", "", { maxAge: 0 });
   res.cookie("UserId", "", { maxAge: 0 });
   return res.redirect("/login");
@@ -32,6 +34,9 @@ router.get(
 
 router.get("/addCart/:product_id", cart.handleAddCart);
 router.get("/viewCart", middleware.getAllCategory, (req, res) => {
+  if (req.query.paymentId) {
+    req.session.cart = [];
+  }
   let erro = req.flash("erro");
   let success = req.flash("success");
   let carts = req.session.cart;

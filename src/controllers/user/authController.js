@@ -141,6 +141,7 @@ const login = async (req, res) => {
             id: user.id,
             name: user.name,
             username: user.username,
+            email: user.email,
           };
           let token = createJWT(dataUser);
           res.cookie("jwt", token, {
